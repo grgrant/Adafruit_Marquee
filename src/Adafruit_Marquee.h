@@ -244,6 +244,18 @@ private:
   bool loadPrvBmpCRC(uint32_t &crc);
   void storeBmpCRC(uint32_t crc);
 
+  // Battery reporting, opt-in via "battery": {"enabled": true} in the config.
+  // A no-op on boards without a battery monitor.
+  void parseBatteryCfg();
+  void sampleBattery();
+  void publishBattery();
+  bool _batt_enabled;     ///< True if battery reporting is enabled and supported
+  bool _batt_as_percent;  ///< Publish percent (true) or volts (false)
+  bool _batt_pending;     ///< True while a sample is waiting to be published
+  float _batt_volts;      ///< Last battery sample, in volts, or < 0 if none
+  const char *_batt_feed; ///< Optional feed key override from the config
+  char _topic_batt[MAX_IO_FEED_NAME_LEN + 96]; ///< <user>/f/<feed>
+
   const char *wakeupReason();
   bool didWakeFromSleep();
 #ifdef ARDUINO_ARCH_ESP32
