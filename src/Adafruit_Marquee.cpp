@@ -203,8 +203,8 @@ static uint8_t battPercent(float volts) {
   for (size_t i = 1; i < n; i++) {
     if (volts >= curve[i].v) {
       float frac = (volts - curve[i].v) / (curve[i - 1].v - curve[i].v);
-      return curve[i].pct + (uint8_t)(frac * (curve[i - 1].pct - curve[i].pct) +
-                                      0.5f);
+      return curve[i].pct + 
+             (uint8_t)(frac * (curve[i - 1].pct - curve[i].pct) + 0.5f);
     }
   }
   return 0;
